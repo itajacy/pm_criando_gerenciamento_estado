@@ -19,12 +19,34 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
   @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final counterState = CounterState();
+
+  @override
+  void initState() {
+    counterState.addListener(callback);
+    super.initState();
+  }
+
+  void callback() {
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    counterState.removeListener(callback);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final counterState = CounterState();
     return Scaffold(
       appBar: AppBar(title: const Text('Gerenciamento de estado')),
       body: Center(
