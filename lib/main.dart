@@ -11,24 +11,34 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue, useMaterial3: false,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: false),
       home: const MyHomePage(),
     );
   }
 }
 
-
 class MyHomePage extends StatelessWidget {
-
   const MyHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Gerenciamento de estado')),
-      body: Container(),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('Valor do estado'),
+            ElevatedButton(
+              onPressed: () {
+                // incrementar o estado
+                
+              },
+              child: const Text("Incrementar"),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

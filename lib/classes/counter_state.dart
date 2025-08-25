@@ -1,0 +1,11 @@
+import 'package:pm_criando_gerenciamento_estado/controllers/change_state.dart';
+
+class CounterState extends ChangeState {
+  int counter = 0;
+
+  void increment() {
+    counter++;
+    notifyCallback();
+  }
+  
+}
