@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'classes/counter_state.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -22,17 +24,18 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final counterState = CounterState();
     return Scaffold(
       appBar: AppBar(title: const Text('Gerenciamento de estado')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Valor do estado'),
+            Text('Valor do estado: ${counterState.counter}'),
             ElevatedButton(
               onPressed: () {
-                // incrementar o estado
-                
+                counterState.increment();
+
               },
               child: const Text("Incrementar"),
             ),
