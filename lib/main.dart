@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'classes/counter_state.dart';
+import 'classes/counter_state.dart'; 
 
 ///O callback é uma função que é passada como argumento para outra função
 ///e é executada em um determinado ponto do tempo.
