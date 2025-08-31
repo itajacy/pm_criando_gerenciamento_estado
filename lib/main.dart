@@ -75,9 +75,15 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             ObservableBuilder(
               observable: counterState,
-              builder: (BuildContext context) {
-                return Text(
-                  'Valor do estado do ChangeState: ${counterState.counter}',
+              child: const Text('Child Widget'),
+              builder: (BuildContext context, child) {
+                return Column(
+                  children: [
+                    Text(
+                      'Valor do estado do ChangeState: ${counterState.counter}',
+                    ),
+                    child!,
+                  ],
                 );
               },
             ),

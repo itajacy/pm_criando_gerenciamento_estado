@@ -3,16 +3,21 @@ import 'package:pm_criando_gerenciamento_estado/contracts/observable.dart';
 
 class ObservableBuilder extends StatefulWidget {
   final Observable observable;
-  final Widget Function(BuildContext context) builder;
+  final Widget? child;
+  final Widget Function(BuildContext context, Widget? child) builder;
 
-  const ObservableBuilder({super.key, required this.observable, required this.builder});
+  const ObservableBuilder({
+    super.key,
+    required this.observable,
+    required this.builder,
+    this.child,
+  });
 
   @override
   State<ObservableBuilder> createState() => _ObservableBuilderState();
 }
 
 class _ObservableBuilderState extends State<ObservableBuilder> {
-
   @override
   void initState() {
     widget.observable.addListener(rebuild);
@@ -31,6 +36,6 @@ class _ObservableBuilderState extends State<ObservableBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.builder(context);
+    return widget.builder(context, widget.child);
   }
 }
