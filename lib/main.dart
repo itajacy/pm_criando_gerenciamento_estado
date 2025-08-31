@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pm_criando_gerenciamento_estado/builders/observable_builder.dart';
 import 'package:pm_criando_gerenciamento_estado/controllers/state_observable.dart';
 
 import 'classes/counter_state.dart';
@@ -47,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    counterState.addListener(callback);
+    // counterState.addListener(callback);
     observableCounter.addListener(callback);
     super.initState();
   }
@@ -59,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void dispose() {
-    counterState.removeListener(callback);
+    // counterState.removeListener(callback);
     observableCounter.removeListener(callback);
     super.dispose();
   }
@@ -72,7 +73,15 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Valor do estado do ChangeState: ${counterState.counter}'),
+            ObservableBuilder(
+              observable: counterState,
+              builder: (BuildContext context) {
+                return Text(
+                  'Valor do estado do ChangeState: ${counterState.counter}',
+                );
+              },
+            ),
+
             ElevatedButton(
               onPressed: () {
                 counterState.increment();
@@ -84,7 +93,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ElevatedButton(
               onPressed: () {
-                counterState.increment();
                 observableCounter.state++;
               },
               child: const Text("Incrementar"),
