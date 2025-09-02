@@ -5,6 +5,7 @@ class ObservableStateBuilder<T> extends StatefulWidget {
   final StateObservable<T> stateObservable;
   final Widget Function(BuildContext context, T state, Widget? child) builder;
   final bool Function(T oldState, T newState)? buildWhen;
+  final void Function(BuildContext context, T state)? listener;
   final Widget? child;
 
   const ObservableStateBuilder({
@@ -13,6 +14,7 @@ class ObservableStateBuilder<T> extends StatefulWidget {
     required this.builder,
     this.child,
     this.buildWhen,
+    this.listener,
   });
 
   @override
@@ -35,6 +37,9 @@ class _ObservableStateBuilderState<T> extends State<ObservableStateBuilder<T>> {
   void callback() {
     if (shouldRebuild()) {
       state = widget.stateObservable.state;
+      if (widget.listener != null) {
+        widget.listener!(context, state);
+      }
       setState(() {});
     }
     state = widget.stateObservable.state;
