@@ -4,6 +4,7 @@ import 'package:pm_criando_gerenciamento_estado/controllers/state_observable.dar
 class ObservableStateBuilder<T> extends StatefulWidget {
   final StateObservable<T> stateObservable;
   final Widget Function(BuildContext context, T state, Widget? child) builder;
+  final bool Function(T oldState, T newState)? buildWhen;
   final Widget? child;
 
   const ObservableStateBuilder({
@@ -11,6 +12,7 @@ class ObservableStateBuilder<T> extends StatefulWidget {
     required this.stateObservable,
     required this.builder,
     this.child,
+    this.buildWhen,
   });
 
   @override
@@ -31,8 +33,22 @@ class _ObservableStateBuilderState<T> extends State<ObservableStateBuilder<T>> {
   }
 
   void callback() {
+    if (shouldRebuild()) {
+      state = widget.stateObservable.state;
+      setState(() {});
+    }
     state = widget.stateObservable.state;
-    setState(() {});
+  }
+
+  bool shouldRebuild() {
+    if (widget.buildWhen != null) {
+      return widget.buildWhen!(
+        state,
+        widget.stateObservable.state,
+      ); // estado antigo e novo
+    } else {
+      return true;
+    }
   }
 
   @override

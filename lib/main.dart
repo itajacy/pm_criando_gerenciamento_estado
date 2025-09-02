@@ -56,6 +56,12 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             ObservableStateBuilder(
               stateObservable: observableCounter,
+              buildWhen: (oldState, newState) {
+                print(" oldState: $oldState, newState: $newState");
+                // só vai reconstruir se o novo estado for par
+                return newState % 2 == 0;
+                // return oldState != newState;
+              },
               builder: (context, state, child) {
                 return Text(
                   'Valor do observableCounter: $state',
