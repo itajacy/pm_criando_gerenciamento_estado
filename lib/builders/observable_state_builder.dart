@@ -19,13 +19,19 @@ class ObservableStateBuilder<T> extends StatefulWidget {
 }
 
 class _ObservableStateBuilderState<T> extends State<ObservableStateBuilder<T>> {
+  // vai gerenciar o estado sozinho
+  late T state;
+
   @override
   void initState() {
     widget.stateObservable.addListener(callback);
+
+    state = widget.stateObservable.state;
     super.initState();
   }
 
   void callback() {
+    state = widget.stateObservable.state;
     setState(() {});
   }
 
@@ -37,6 +43,7 @@ class _ObservableStateBuilderState<T> extends State<ObservableStateBuilder<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.builder(context, widget.stateObservable.state, widget.child);
+    // return widget.builder(context, widget.stateObservable.state, widget.child);
+    return widget.builder(context, state, widget.child);
   }
 }
