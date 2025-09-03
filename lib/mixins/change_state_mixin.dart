@@ -10,20 +10,26 @@ import 'package:pm_criando_gerenciamento_estado/controllers/change_state.dart';
 // escutadores serão notificados
 
 mixin ChangeStateMixin<T extends StatefulWidget> on State<T> {
-  late ChangeState? _changeState;
+  final List<ChangeState> _changeStates = [];
 
   void useChangeState(ChangeState changeState) {
     changeState.addListener(_callback);
-    _changeState = changeState;
+    _changeStates.add(changeState);
   }
 
   void _callback() {
-    setState(() {});
+    // se o widget ainda estiver montado, ou seja, na árvore de widgets
+    // então chama o setState para atualizar a interface
+    if (mounted) setState(() {});
   }
 
   @override
   void dispose() {
-    if (_changeState != null) _changeState?.removeListener(_callback);
+    // percorre a lista de ChangeState e remove o listener
+    for (var element in _changeStates) {
+      element.removeListener(_callback);
+    }
+
     super.dispose();
   }
 }
