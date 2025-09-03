@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pm_criando_gerenciamento_estado/builders/observable_builder.dart';
 import 'package:pm_criando_gerenciamento_estado/builders/observable_state_builder.dart';
 import 'package:pm_criando_gerenciamento_estado/controllers/state_observable.dart';
+import 'package:pm_criando_gerenciamento_estado/mixins/change_state_mixin.dart';
 
 import 'classes/counter_state.dart';
 
@@ -43,8 +44,9 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  final observableCounter = StateObservable<int>(0);
+class _MyHomePageState extends State<MyHomePage> with ChangeStateMixin {
+  final counterState = CounterState();
+  // final observableCounter = StateObservable<int>(0);
 
   @override
   Widget build(BuildContext context) {
@@ -54,28 +56,10 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ObservableStateBuilder(
-              stateObservable: observableCounter,
-              listener: (context, state) {
-                ScaffoldMessenger.of(context).removeCurrentSnackBar();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('O valor do contador é $state'),
-                  ),
-                );
-              },
-              buildWhen: (oldState, newState) {
-                return newState % 2 == 0;
-              },
-              builder: (context, state, child) {
-                return Text(
-                  'Valor do observableCounter: $state',
-                );
-              },
-            ),
+            Text('O valor do contador é ${counterState.counter}'),
             ElevatedButton(
               onPressed: () {
-                observableCounter.state++;
+                counterState.increment();
               },
               child: Text("incrementar"),
             ),
