@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pm_criando_gerenciamento_estado/controllers/change_state.dart';
+
+import '../controllers/state_observable.dart';
 // o mixin é uma classe que pode ser "misturada" em outras classes
 // para adicionar funcionalidades a essas classes
 // o mixin não pode ser instanciado, ou seja, não pode criar objetos
@@ -31,5 +33,12 @@ mixin ChangeStateMixin<T extends StatefulWidget> on State<T> {
     }
 
     super.dispose();
+  }
+
+  StateObservable<T> useStateObservable<T>(T state) {
+    final stateObservable = StateObservable<T>(state);
+    stateObservable.addListener(_callback);
+    _changeStates.add(stateObservable);
+    return stateObservable;
   }
 }
