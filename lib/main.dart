@@ -49,6 +49,13 @@ class _MyHomePageState extends State<MyHomePage> with ChangeStateMixin {
   // final observableCounter = StateObservable<int>(0);
 
   @override
+  void initState() {
+    // registrando o callback para ouvir as mudanças no estado do mixin
+    useChangeState(counterState);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Gerenciamento de estado')),
