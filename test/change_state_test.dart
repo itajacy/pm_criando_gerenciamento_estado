@@ -17,19 +17,20 @@ void main() {
     });
     test("Should execute callback", () {
       // Arrange - montar o nosso teste
-      bool callbackChanged = false;
+      bool callbackExecuted = false;
       final _CounterChangeState changeState = _CounterChangeState();
+      void callback() {
+        callbackExecuted = true;
+      }
 
       // Act - disparar a ação que queremos testar
-      changeState.addListener(() {
-        callbackChanged = true;
-      });
+      changeState.addListener(callback);
       changeState.increment();
 
       // Assert - verificar se o resultado é o esperado
       // aqui esperamos que o valor do counter seja 1
       expect(changeState.counter, 1);
-      expect(callbackChanged, true);
+      expect(callbackExecuted, true);
     });
 
 
