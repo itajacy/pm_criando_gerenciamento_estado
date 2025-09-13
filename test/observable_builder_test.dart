@@ -31,7 +31,7 @@ void main() {
 const incrementButtonKey = "increment_key";
 
 class _CounterWidget extends StatefulWidget {
-  const _CounterWidget({super.key});
+  const _CounterWidget();
 
   @override
   State<_CounterWidget> createState() => __CounterWidgetState();
