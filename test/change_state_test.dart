@@ -1,12 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pm_criando_gerenciamento_estado/controllers/change_state.dart';
+
+import 'testable/controllers/counter_change_state.dart';
 
 void main() {
   //criando um teste unitario
   group("Should teste ChangeState", () {
     test("Should increment counter", () {
       // Arrange - montar o nosso teste
-      final _CounterChangeState changeState = _CounterChangeState();
+      final CounterChangeState changeState = CounterChangeState();
 
       // Act - disparar a ação que queremos testar
       changeState.increment();
@@ -18,7 +19,7 @@ void main() {
     test("Should execute callback", () {
       // Arrange - montar o nosso teste
       bool callbackExecuted = false;
-      final _CounterChangeState changeState = _CounterChangeState();
+      final CounterChangeState changeState = CounterChangeState();
       void callback() {
         callbackExecuted = true;
       }
@@ -37,11 +38,4 @@ void main() {
   });
 }
 
-class _CounterChangeState extends ChangeState {
-  int counter = 0;
 
-  void increment() {
-    counter++;
-    notifyCallback();
-  }
-}

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pm_criando_gerenciamento_estado/builders/observable_builder.dart';
-import 'package:pm_criando_gerenciamento_estado/builders/observable_state_builder.dart';
 import 'package:pm_criando_gerenciamento_estado/controllers/state_observable.dart';
 import 'package:pm_criando_gerenciamento_estado/mixins/change_state_mixin.dart';
 

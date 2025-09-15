@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_shadowing_type_parameters
+
 import 'package:flutter/material.dart';
 import 'package:pm_criando_gerenciamento_estado/controllers/change_state.dart';
 

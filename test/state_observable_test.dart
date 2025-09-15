@@ -3,6 +3,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:pm_criando_gerenciamento_estado/controllers/state_observable.dart';
+import 'package:pm_criando_gerenciamento_estado/extensions/state_observable_extensions.dart';
+
+import 'testable/controllers/product_controller.dart';
+import 'testable/entitites/product.dart';
+import 'testable/states/base_state.dart';
 
 void main() {
   group("Should test StateObservable", () {
@@ -73,7 +78,9 @@ void main() {
     );
     productController.generateError();
   });
-  test("Should generate states in sequence when we get error2", () {
+  test(
+    "Should generate states in sequence when we have success and after getting error",
+    () {
     final productController = ProductController();
     expect(
       productController.asStream(),
@@ -100,62 +107,6 @@ void main() {
 
 }
 
-abstract class BaseState {}
 
-// ou IddleState   estado inicial
-class InitialState extends BaseState {}
 
-//estado de carregamento
-class LoadingState extends BaseState {}
 
-// estado de sucesso
-// normalmente temos uma variável que representa o valor do estado T
-class SuccessState<T extends Object> extends BaseState {
-  final T data;
-  SuccessState({required this.data});
-}
-
-// estado de erro
-// normalmente temos uma variável que representa a mensagem de erro
-class ErrorState extends BaseState {
-  final String message;
-  ErrorState({required this.message});
-}
-
-class Product {
-  final int id;
-  final String name;
-  Product({
-    required this.id,
-    required this.name,
-  });
-}
-
-class ProductController extends StateObservable<BaseState> {
-  // alterando o estado inicial para InitialState, passando por dentro
-  // ProductController(super.state);
-  ProductController() : super(InitialState());
-
-  void getProducts() {
-    // quando iniciar a requisição, alteramos o estado para LoadingState
-    state = LoadingState();
-    // simulando uma requisição de rede
-    state = SuccessState(
-      data: [
-        Product(id: 1, name: "Primeiro produto"),
-        Product(id: 2, name: "Segundo produto"),
-      ],
-    );
-  }
-
-  void generateError() {
-    // quando iniciar a requisição, alteramos o estado para LoadingState
-    state = LoadingState();
-    // simulando uma requisição de rede
-    try {
-      throw Exception();
-    } catch (e) {
-      state = ErrorState(message: "Erro ao buscar produtos");
-    }
-  }
-}
