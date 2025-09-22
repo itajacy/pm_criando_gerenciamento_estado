@@ -1,22 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pm_criando_gerenciamento_estado/controllers/state_observable.dart';
-import 'package:pm_criando_gerenciamento_estado/mixins/change_state_mixin.dart';
-
-import 'classes/counter_state.dart';
-
-///O callback é uma função que é passada como argumento para outra função
-///e é executada em um determinado ponto do tempo.
-/// O callback é afunção que está no main e que contém o setState
-///
-/// É na instância de CounterState que o callback é registrado como ouvinte.
-/// portanto quando houver uma mudança no estado, o callback será chamado.
-///
-/// Isso garante que a interface do usuário seja atualizada sempre que o estado mudar.
-///
-///  É na instância de CounterState que  foi adicionada um ouvinte (addListener)
-/// portanto quando houver uma alteraçao e uma NOTIFICAÇÃO, dentro da
-/// Notificação é executada o callback e como dentro do Main existe um setState que está dentro
-/// de um stateful a tela é atualizada
+import 'package:pm_criando_gerenciamento_estado/controllers/stream_notifier_imp.dart';
 
 void main() {
   runApp(const MyApp());
@@ -42,48 +25,38 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with ChangeStateMixin {
-  final counterState = CounterState();
-  final observableCounter = StateObservable<int>(0);
-  late StateObservable<int> newMixinCounter;
+class _MyHomePageState extends State<MyHomePage> {
+  final _counterNotifier = StreamNotifier(0);
 
   @override
   void initState() {
-    // registrando o callback para ouvir as mudanças no estado do mixin
-    useChangeState(counterState);
-    useChangeState(observableCounter);
-    newMixinCounter = useStateObservable<int>(0);
+    _counterNotifier.stream.listen(
+      (newState) {
+        setState(() {});
+      },
+    );
+    
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Gerenciamento de estado')),
+      appBar: AppBar(
+        title: const Text("Testando Streams"),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('O valor do counterState ${counterState.counter}'),
-            ElevatedButton(
-              onPressed: () {
-                counterState.increment();
-              },
-              child: Text("incrementar"),
+            Text(
+              'Valor do counter: ${_counterNotifier.state}',
             ),
-            Text('O valor do observableCounter é ${observableCounter.state}'),
             ElevatedButton(
               onPressed: () {
-                observableCounter.state++;
+                _counterNotifier.emit(_counterNotifier.state + 1);
               },
-              child: Text("incrementar"),
-            ),
-            Text('O valor do newMixinCounter é ${newMixinCounter.state}'),
-            ElevatedButton(
-              onPressed: () {
-                newMixinCounter.state++;
-              },
-              child: Text("incrementar"),
+              child: const Text("Incrementar"),
             ),
           ],
         ),
