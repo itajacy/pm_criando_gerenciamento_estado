@@ -46,6 +46,9 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             StreamNotifierBuilder(
+              buildWhen: (previous, current) {
+                return current % 2 == 0;
+              },
               streamNotifier: _counterNotifier,
               builder: (context, state) {
                 return Text(

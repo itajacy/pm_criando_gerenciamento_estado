@@ -6,11 +6,14 @@ import 'package:pm_criando_gerenciamento_estado/contracts/stream_notifier.dart';
 class StreamNotifierBuilder<T> extends StatefulWidget {
   final IStreamNotifier<T> streamNotifier;
   final Widget Function(BuildContext context, T state) builder;
+  final bool Function(T previous, T current)? buildWhen;
 
-  StreamNotifierBuilder({
+
+  const StreamNotifierBuilder({
     super.key,
     required this.streamNotifier,
     required this.builder,
+    this.buildWhen,
   });
 
   @override
@@ -21,12 +24,21 @@ class StreamNotifierBuilder<T> extends StatefulWidget {
 class _StreamNotifierBuilderState<T> extends State<StreamNotifierBuilder<T>> {
   late StreamSubscription<T>? _streamSubscription;
 
+  late T _state;
+
   @override
   void initState() {
-    _streamSubscription = widget.streamNotifier.stream.listen((newValue) {
-      setState(() {});
+    _state = widget.streamNotifier.state;
+    _streamSubscription = widget.streamNotifier.stream.listen((newData) {
+      if (_shouldRebuild(_state, newData)) {
+        setState(() {});
+      }
     });
     super.initState();
+  }
+
+  bool _shouldRebuild(T previous, T current) {
+    return widget.buildWhen?.call(previous, current) ?? true;
   }
 
   @override
@@ -38,6 +50,6 @@ class _StreamNotifierBuilderState<T> extends State<StreamNotifierBuilder<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.builder(context, widget.streamNotifier.state);
+    return widget.builder(context, _state);
   }
 }
