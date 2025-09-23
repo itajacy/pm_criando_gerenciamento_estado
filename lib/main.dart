@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:pm_criando_gerenciamento_estado/contracts/stream_notifier_builder.dart';
 import 'package:pm_criando_gerenciamento_estado/controllers/stream_notifier_imp.dart';
 
 void main() {
@@ -30,25 +31,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final _counterNotifier = StreamNotifier(0);
 
-  late StreamSubscription<int>? _streamSubscription;
 
-  @override
-  void initState() {
-    _streamSubscription = _counterNotifier.stream.listen(
-      (newState) {
-        if (mounted) setState(() {});
-      },
-    );
 
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _streamSubscription?.cancel();
-    _streamSubscription = null;
-    super.dispose();
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +45,13 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Valor do counter: ${_counterNotifier.state}',
+            StreamNotifierBuilder(
+              streamNotifier: _counterNotifier,
+              builder: (context, state) {
+                return Text(
+                  'Valor do counter: ${_counterNotifier.state}',
+                );
+              }
             ),
             ElevatedButton(
               onPressed: () {
