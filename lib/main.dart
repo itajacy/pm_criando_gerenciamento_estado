@@ -1,4 +1,3 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:pm_criando_gerenciamento_estado/contracts/stream_notifier_builder.dart';
@@ -46,7 +45,16 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             StreamNotifierBuilder(
+              listen: (context, state) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('O valor emitido $state'),
+                    // duration: const Duration(milliseconds: 500),
+                  ),
+                );
+              },
               buildWhen: (previous, current) {
+                print('previous: $previous, current: $current');
                 return current % 2 == 0;
               },
               streamNotifier: _counterNotifier,

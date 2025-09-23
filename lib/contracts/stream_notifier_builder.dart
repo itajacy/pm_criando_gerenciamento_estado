@@ -7,13 +7,14 @@ class StreamNotifierBuilder<T> extends StatefulWidget {
   final IStreamNotifier<T> streamNotifier;
   final Widget Function(BuildContext context, T state) builder;
   final bool Function(T previous, T current)? buildWhen;
-
+  final void Function(BuildContext context, T state)? listen;
 
   const StreamNotifierBuilder({
     super.key,
     required this.streamNotifier,
     required this.builder,
     this.buildWhen,
+    this.listen,
   });
 
   @override
@@ -31,8 +32,12 @@ class _StreamNotifierBuilderState<T> extends State<StreamNotifierBuilder<T>> {
     _state = widget.streamNotifier.state;
     _streamSubscription = widget.streamNotifier.stream.listen((newData) {
       if (_shouldRebuild(_state, newData)) {
-        setState(() {});
+        if (mounted) {
+          widget.listen?.call(context, _state);
+          setState(() {});
+        }
       }
+      _state = newData;
     });
     super.initState();
   }
