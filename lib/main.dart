@@ -46,6 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             StreamNotifierBuilder(
               listen: (context, state) {
+                ScaffoldMessenger.of(context).clearSnackBars();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('O valor emitido $state'),
@@ -53,10 +54,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 );
               },
-              buildWhen: (previous, current) {
-                print('previous: $previous, current: $current');
-                return current % 2 == 0;
-              },
+              // buildWhen: (previous, current) {
+              //   print('previous: $previous, current: $current');
+              //   return current % 2 == 0;
+              // },
               streamNotifier: _counterNotifier,
               builder: (context, state) {
                 return Text(
